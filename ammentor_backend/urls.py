@@ -19,7 +19,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+def healthcheck(request):
+    return JsonResponse({"status": "ok"})
+
 urlpatterns = [
+    path('health/', healthcheck),
     path('admin/', admin.site.urls),
     path('', include('curriculum.urls')),
     path('', include('members.urls')),
