@@ -18,15 +18,29 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
+from django.http import HttpResponse
 
 def healthcheck(request):
     return JsonResponse({"status": "ok"})
+def nothingtosee(request):
+    image_url = "https://i.imgflip.com/9s22un.jpg"
 
+    html_content = f"""
+    <html>
+    <head><title>Nothing to See Here</title></head>
+    <body style="text-align: center;">
+        <img src="{image_url}" alt="Sad Pablo Meme" style="width:50%; margin-top:20px; border-radius: 12px;">
+    </body>
+    </html>
+    """
+    return HttpResponse(html_content)
 urlpatterns = [
     path('health/', healthcheck),
+    path('', nothingtosee, name='landing'), 
     path('admin/', admin.site.urls),
-    path('', include('curriculum.urls')),
-    path('', include('members.urls')),
-    path('', include('badges.urls'))
+    path('curriculum/', include('curriculum.urls')), 
+    path('members/', include('members.urls')),
+    path('badges/', include('badges.urls')),
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
